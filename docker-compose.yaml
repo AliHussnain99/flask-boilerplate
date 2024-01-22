@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - '6380:6379'
+
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+
+  web:
+    build: .
+    container_name: web
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - core/env/local/.env
+
+  celery:
+    build: .
+    container_name: celery
+    command: celery -A app.celery worker --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - core/env/local/.env
+
+  #  flower:
+  #    build: .
+  #    container_name: flower
+  #    command: celery flower -A tasks
+  #    ports:
+  #      - '5555:5555'
+  #    depends_on:
+  #      - redis
+  #      - postgres
+  #      - celery
+  #    env_file:
+  #      - core/env/local/.env
+
+  celery-beat:
+    build: .
+    container_name: celery-beat
+    command: celery -A app.celery beat --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - postgres
+      - celery
+    env_file:
+      - core/env/local/.env

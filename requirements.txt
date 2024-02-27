@@ -49,5 +49,5 @@ wcwidth==0.2.13
 webargs==8.4.0
 Werkzeug==3.0.1
 zipp==3.17.0
-flower
-gunicorn
+flower==2.0.1
+gunicorn==21.2.0

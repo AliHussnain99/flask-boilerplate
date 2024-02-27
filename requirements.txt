@@ -50,3 +50,4 @@ webargs==8.4.0
 Werkzeug==3.0.1
 zipp==3.17.0
 flower
+gunicorn

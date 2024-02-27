@@ -19,5 +19,3 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 5000
 #This command will start the Python Flask application Docker container
-
-CMD ["python", "app.py" ]

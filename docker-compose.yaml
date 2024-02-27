@@ -10,12 +10,10 @@ services:
   db:
     image: postgres
     container_name: db
-    environment:
-      POSTGRES_DB: testdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
     ports:
       - '5432:5432'
+    env_file:
+      - core/env/local/.env
 
   web:
     build: .
